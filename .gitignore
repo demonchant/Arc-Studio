@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+contracts/out/
+contracts/cache/
+
+# Environment — NEVER commit secrets
+.env
+.env.*
+!.env.example
+
+# Circle credentials — NEVER commit
+.circle/
+
+# Foundry cache
+cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+/tmp/
+
+# Bun
+.bun/
+
+# Runtime capture files (Arc Studio internal)
+console.jsonl
+traces.jsonl
+
+# Arc Studio internal context
+context/
+
+# Foundry libraries — install via forge install, not committed directly
+lib/
+
+# Contract metadata with internal sandbox paths
+contracts/contract-metadata/MergePay.json

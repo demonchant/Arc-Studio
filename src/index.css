@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a1628;
+  --bg-gradient: linear-gradient(180deg, #0a1628 0%, #0d1f3c 58%, #0f2647 100%);
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.10);
+  --surface-muted: #111f38;
+  --ink: #f0f6ff;
+  --ink-2: #c8daf5;
+  --muted: #8facc8;
+  --subtle: #5b7a9a;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(170, 210, 255, 0.35);
+  --accent: #22d3ee;
+  --accent-hover: #67e8f9;
+  --accent-amber: #f59e0b;
+  --accent-amber-hover: #fbbf24;
+  --focus: #22d3ee;
+  --success: #34d399;
+  --danger: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100dvh;
+  color: var(--ink);
+}
+
+.display {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', Menlo, monospace;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Sonner toast overrides for dark theme */
+[data-sonner-toaster] {
+  --normal-bg: #111f38;
+  --normal-border: rgba(255,255,255,0.12);
+  --normal-text: #f0f6ff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
