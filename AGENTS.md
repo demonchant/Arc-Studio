@@ -15,14 +15,13 @@ MergePay is an onchain bounty escrow for open source maintainers. A funder locks
 | Contract | Network | Address | Explorer |
 |---|---|---|---|
 | MergePay | Arc Testnet (Chain ID 5042002) | 0xd22e0efe90d9a92ea9c669acfb610e42a4129e84 | https://explorer.testnet.arc.io/address/0xd22e0efe90d9a92ea9c669acfb610e42a4129e84 |
-| MergePay | Arc Mainnet (Chain ID 5042) | PENDING — run scripts/deploy-mainnet.sh | https://explorer.arc.io |
+| MergePay | Arc Mainnet (Chain ID 5042) | 0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470 | https://explorer.arc.io/address/0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470 |
 
 USDC constructor arg (both networks): 0x3600000000000000000000000000000000000000
 
-## After Mainnet Deployment
-
-Set MERGEPAY_MAINNET_ADDRESS in src/lib/chainConfig.ts to the deployed address.
-Also update AGENTS.md with the real address and tx hash.
+Mainnet deployment tx: 0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f
+Mainnet deployment block: 27024790
+Mainnet deployer: 0xf7c1F9f31A6D4dc9d725527a0A3819c1274E3245
 
 ## Tech Stack
 

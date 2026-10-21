@@ -28,7 +28,10 @@ Built with [Arc Studio](https://studio.arc.io).
 `0xd22e0efe90d9a92ea9c669acfb610e42a4129e84`
 
 **Mainnet deployment (Arc Mainnet, chain ID 5042):**
-Pending — see `scripts/deploy-mainnet.sh`.
+`0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470`
+Tx: `0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f`
+Block: 27024790
+Explorer: https://explorer.arc.io/address/0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470
 
 ## Tech stack
 
@@ -51,10 +54,21 @@ Contract tests:
 forge test
 ```
 
-## Mainnet deployment
+## Running against Arc Mainnet
 
-See `scripts/deploy-mainnet.sh` for the full external deployment workflow.
-After deployment, set `MERGEPAY_MAINNET_ADDRESS` in `src/lib/chainConfig.ts`.
+The app targets Arc Mainnet by default. Connect MetaMask (or any injected wallet) to **Arc Mainnet (chain ID 5042)**:
+
+- RPC: `https://rpc.mainnet.arc.io`
+- Chain ID: `5042`
+- Currency: USDC
+- Explorer: `https://explorer.arc.io`
+
+```bash
+bun install
+bun run dev
+```
+
+Open the preview, connect your wallet on chain 5042, and all write operations are live.
 
 ## Security
 

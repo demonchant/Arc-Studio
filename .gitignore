@@ -41,7 +41,7 @@ traces.jsonl
 context/
 
 # Foundry libraries — install via forge install, not committed directly
-lib/
+/lib/
 
 # Contract metadata with internal sandbox paths
 contracts/contract-metadata/MergePay.json

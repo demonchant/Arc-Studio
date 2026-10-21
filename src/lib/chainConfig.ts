@@ -15,20 +15,30 @@
  *
  * ── USDC verification ──────────────────────────────────────────────────────
  * Address 0x3600000000000000000000000000000000000000
- * Verified live on Arc Mainnet via read_contract this session:
+ * Verified live on Arc Mainnet via read_contract:
  *   name()     = "USDC"
- *   decimals() = 6
+ *   decimals() = 6  (ERC-20 token amounts use 6 decimals)
+ *   Native gas on Arc also uses USDC but with 18 decimals for gas accounting.
+ *   These are two views of the same asset — do not sum or double-count them.
  * Same address on both Arc networks per Arc Studio registry.
+ *
+ * ── Mainnet deployment ─────────────────────────────────────────────────────
+ * MergePay deployed to Arc Mainnet on 2026-10-21.
+ * Address:  0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470
+ * Tx hash:  0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f
+ * Block:    27024790
+ * Deployer: 0xf7c1F9f31A6D4dc9d725527a0A3819c1274E3245
+ * USDC arg: 0x3600000000000000000000000000000000000000
+ * Fee:      0.014477232 USDC
+ *
+ * Onchain read verification (this session, before activation):
+ *   usdc()        = 0x3600000000000000000000000000000000000000  ✓
+ *   bountyCount() = 0  ✓
+ *   bytecode      = 2835 bytes present  ✓
  *
  * ── Current app target ─────────────────────────────────────────────────────
  * APP_CHAIN_ID = ARC_MAINNET_CHAIN_ID
- *
- * Mainnet writes are enabled only when MERGEPAY_MAINNET_ADDRESS is set to a
- * real deployed address. Until then, MAINNET_READY = false and the app
- * disables all writes and shows a clear unavailable state.
- *
- * The Arc Testnet deployment is preserved at MERGEPAY_TESTNET_ADDRESS and
- * its records are not affected by this change.
+ * MAINNET_READY = true (address is set)
  */
 
 /** Arc Testnet — chain ID: viem arcTestnet.id = 5042002 */
@@ -70,7 +80,8 @@ export const MERGEPAY_TESTNET_ADDRESS = '0xd22e0efe90d9a92ea9c669acfb610e42a4129
  * Do not use the testnet address here. Do not guess or invent an address.
  * Set this only to a value from a real broadcast receipt.
  */
-export const MERGEPAY_MAINNET_ADDRESS: `0x${string}` | null = null
+export const MERGEPAY_MAINNET_ADDRESS: `0x${string}` | null =
+  '0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470'
 
 /**
  * True only when the mainnet contract address has been filled in above.

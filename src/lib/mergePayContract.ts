@@ -7,12 +7,14 @@
  *   Explorer: https://explorer.testnet.arc.io/address/0xd22e0efe90d9a92ea9c669acfb610e42a4129e84
  *
  * Mainnet deployment (Arc Mainnet, chain ID 5042):
- *   Address: PENDING — run scripts/deploy-mainnet.sh externally, sign in wallet,
- *            then set MERGEPAY_MAINNET_ADDRESS in src/lib/chainConfig.ts.
+ *   Address:  0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470
+ *   Tx:       0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f
+ *   Block:    27024790
+ *   Deployer: 0xf7c1F9f31A6D4dc9d725527a0A3819c1274E3245
+ *   Explorer: https://explorer.arc.io/address/0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470
  *
  * The app targets Arc Mainnet (APP_CHAIN_ID = 5042).
- * MERGEPAY_ADDRESS below is null until the mainnet address is provided.
- * MAINNET_READY gates all write operations in the UI.
+ * MAINNET_READY = true. All write operations are enabled.
  */
 import artifact from '../../contracts/out/MergePay.sol/MergePay.json'
 import {
