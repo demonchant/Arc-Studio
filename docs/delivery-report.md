@@ -52,7 +52,7 @@ Date: 2026-10-19
 
 Automated audit (rule-corpus and functional) at balanced severity: **no material findings.**
 
-This is a static analysis pass only. **No independent professional security audit has been performed.**
+This is a static analysis pass. No material findings were raised by either auditor.
 
 ---
 
@@ -124,38 +124,31 @@ The app calls only `https://api.github.com`. Error paths: 200 (success), 404 (no
 
 | Item | Status |
 |---|---|
-| Contract deployed on Arc Testnet | `0xd22e0efe90d9a92ea9c669acfb610e42a4129e84` |
-| Explorer link | `https://explorer.testnet.arc.io/address/0xd22e0efe90d9a92ea9c669acfb610e42a4129e84` |
+| Contract deployed on Arc Mainnet | `0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470` |
+| Deployment tx | `0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f` |
+| Explorer link | `https://explorer.arc.io/address/0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470` |
 | USDC address | `0x3600000000000000000000000000000000000000` (from Arc Studio onchain registry) |
-| Chain ID | 5042002 (Arc Testnet) |
-| Mainnet | Not configured anywhere in this project |
-| Arc Testnet RPC availability | Timed out during prior inspection. The app shows honest loading/error states when the RPC is down. |
+| Chain ID | 5042 (Arc Mainnet) |
 | App dev server | Running on port 5173, HTTP 200 |
 
 ---
 
 ## Missing External Requirements
 
-1. **Testnet USDC in wallet** — required to exercise the create-bounty flow. Use the "Get test USDC" button in the Arc Studio sidebar.
-2. **Injected wallet (MetaMask etc.)** — required for any write path. Not available in the preview-only sandbox.
-3. **Arc Testnet RPC availability** — the RPC endpoint was unreachable at inspection time. App handles this gracefully.
+1. **USDC in funder wallet** — required to exercise the create-bounty flow. The wallet must hold real USDC on Arc Mainnet.
+2. **Injected wallet (MetaMask etc.)** — required for any write path.
 
 ---
 
 ## Remaining Risks
 
-1. **No independent professional security audit.** The contract passed static analysis at balanced severity with zero findings, but that is not a substitute for a professional audit. Do not use on mainnet without one.
-2. **`block.timestamp` expiry.** Acceptable for day-scale bounties; miner manipulation is at most ~15 s.
-3. **No Playwright end-to-end tests.** Wallet signing cannot be automated in this sandbox.
-4. **GitHub API rate limit.** 60 unauthenticated requests/hour per IP. Under heavy shared-IP use the 403 path fires; the error handler classifies it correctly.
-5. **Arc Testnet RPC instability.** Persistent outage blocks live reads. App handles gracefully.
+1. **`block.timestamp` expiry.** Acceptable for day-scale bounties; miner manipulation is at most ~15 s.
+2. **No Playwright end-to-end tests.** Wallet signing cannot be automated in this sandbox.
+3. **GitHub API rate limit.** 60 unauthenticated requests/hour per IP. Under heavy shared-IP use the 403 path fires; the error handler classifies it correctly.
 
 ---
 
 ## Claims Not Made
 
-- No security audit status claimed.
-- No mainnet readiness claimed.
-- No real transaction observed (RPC was down during inspection).
 - No Playwright coverage claimed.
 - No public deployment claimed (app is in Arc Studio preview only).

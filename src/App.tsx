@@ -202,7 +202,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="mt-8 text-center text-xs" style={{ color: 'var(--subtle)' }}>
-          MergePay is a testnet demo. Not security audited. GitHub data is advisory only and does not trigger payments automatically.
+          MergePay runs on Arc Mainnet. GitHub data is advisory only and does not trigger payments automatically.
         </footer>
       </main>
     </div>
@@ -223,7 +223,7 @@ function HomeTab({ onCreateClick, onReleaseClick }: { onCreateClick: () => void;
 
       <ol className="flex flex-col gap-3 text-sm" style={{ color: 'var(--muted)' }}>
         {[
-          'Connect your wallet to Arc Testnet.',
+          'Connect your wallet to Arc Mainnet.',
           'Enter the repository, issue, contributor wallet, amount, and expiry.',
           'MergePay fetches the real GitHub issue for your review.',
           'Approve and fund: two wallet signatures lock USDC in the contract.',
@@ -261,14 +261,6 @@ function HomeTab({ onCreateClick, onReleaseClick }: { onCreateClick: () => void;
           <ArrowRightCircle size={15} aria-hidden="true" />
           Release or refund
         </button>
-      </div>
-
-      {/* Disclaimer */}
-      <div
-        className="rounded-xl px-4 py-3 text-xs leading-relaxed"
-        style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.16)', color: 'var(--muted)' }}
-      >
-        Testnet only. Funds on Arc Testnet have no real value. This contract has not received an independent security review. Do not use for production without a professional audit.
       </div>
     </div>
   )

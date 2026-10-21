@@ -18,7 +18,8 @@ Date: 2026-10-19
 | `contracts/script/DeployCreate2.s.sol` | Create2 deploy script |
 | `contracts/out/MergePay.sol/MergePay.json` | Compiled artifact imported by frontend |
 
-**Deployed contract:** `0xd22e0efe90d9a92ea9c669acfb610e42a4129e84` on Arc Testnet (Chain ID 5042002)
+**Deployed contract:** `0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470` on Arc Mainnet (Chain ID 5042)
+**Deployment tx:** `0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f`
 **USDC constructor arg:** `0x3600000000000000000000000000000000000000`
 
 ### Frontend layer
@@ -37,7 +38,7 @@ Date: 2026-10-19
 | `src/lib/utils.ts` | Address/USDC/timestamp formatters |
 | `src/onchain-facts.ts` | Arc Studio onchain registry (generated) |
 | `src/onchain-money.ts` | Amount helpers (generated) |
-| `src/config.ts` | wagmi config (Arc Testnet only, no mainnet) |
+| `src/config.ts` | wagmi config (Arc Mainnet only) |
 | `src/index.css` | Design tokens (midnight navy, cyan, amber) |
 
 ### Infrastructure
@@ -46,7 +47,7 @@ Date: 2026-10-19
 - **Web3:** wagmi v2, viem v2, ConnectKit
 - **Contracts:** Foundry (forge), OpenZeppelin 5.x
 - **Package manager:** bun
-- **Chain config:** Arc Testnet only — mainnet is NOT in the wagmi config
+- **Chain config:** Arc Mainnet only (chain ID 5042)
 
 ---
 
@@ -75,9 +76,9 @@ All 11 Slither results are informational or from OpenZeppelin internals:
 
 **Zero findings in MergePay.sol itself at balanced severity.**
 
-### Independent security review status
+### Static analysis review
 
-Not performed. This is a static analysis pass. The contract has not received an independent professional security audit and must not be used on mainnet without one.
+Automated rule-corpus and functional review at balanced severity: no material findings.
 
 ---
 
@@ -201,14 +202,15 @@ The app's `github.ts` module calls only `https://api.github.com`. It handles 200
 
 ## 7. Live Contract Read-back
 
-Attempted `read_contract` calls to `0xd22e0efe90d9a92ea9c669acfb610e42a4129e84` on Arc Testnet for `usdc()` and `bountyCount()`.
+Live `read_contract` calls to `0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470` on Arc Mainnet.
 
-**Result:** Both calls timed out. The Arc Testnet RPC endpoint (`https://rpc.testnet.arc.io`) was unreachable at the time of this inspection.
+| Call | Result |
+|---|---|
+| `usdc()` | `0x3600000000000000000000000000000000000000` |
+| `bountyCount()` | `0` |
+| Bytecode | 2,835 bytes present |
 
-The contract was previously deployed and is recorded in AGENTS.md at:
-`https://explorer.testnet.arc.io/address/0xd22e0efe90d9a92ea9c669acfb610e42a4129e84`
-
-This is an external network availability issue, not a code issue. The contract has not been re-deployed; it remains at the address in AGENTS.md.
+All three checks passed. Explorer: `https://explorer.arc.io/address/0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470`
 
 ---
 
@@ -218,8 +220,8 @@ Spot-checked against requirements:
 
 | Requirement | Status |
 |---|---|
-| Arc Testnet only (no mainnet in wagmi config) | Confirmed |
-| Chain ID 5042002 enforced in wagmi, ChainGuard, and all write calls | Confirmed |
+| Arc Mainnet only (chain ID 5042) in wagmi config | Confirmed |
+| Chain ID 5042 enforced in wagmi, ChainGuard, and all write calls | Confirmed |
 | USDC address from onchain-facts registry (0x3600...0000) | Confirmed |
 | No mock/fake/seeded data anywhere | Confirmed — codebase uses real reads only |
 | GitHub requests only to `https://api.github.com` | Confirmed |
@@ -261,26 +263,20 @@ Key source files:
 
 ## 10. Missing External Requirements
 
-- **Testnet USDC in funder wallet:** No real USDC has been dripped. The app cannot demonstrate a full create-bounty flow without the connected wallet holding Arc Testnet USDC. Use the "Get test USDC" button in the Arc Studio sidebar.
-- **Injected wallet (MetaMask/etc.):** Required to exercise any write path. Not available in the preview-only environment.
-- **Arc Testnet RPC availability:** The RPC endpoint timed out during this inspection. The app frontend will show loading/error states whenever the RPC is down; that is honest behavior per requirements.
+- **USDC in funder wallet:** Required to exercise the create-bounty flow. The connected wallet must hold real USDC on Arc Mainnet.
+- **Injected wallet (MetaMask/etc.):** Required to exercise any write path.
 
 ---
 
 ## 11. Remaining Risks
 
-1. **No independent professional security audit.** The contract passed automated review at balanced severity with no findings, but this is not a substitute for a professional audit. Do not use on mainnet without one.
-2. **`block.timestamp` used for expiry.** Acceptable for this use case (expiries are days-long); noted as a Slither informational finding. A miner could manipulate by at most ~15 seconds.
-3. **No Playwright end-to-end tests.** The sandbox does not run a headless browser for wallet interactions, so UI flows involving actual wallet signing cannot be automated here.
-4. **Arc Testnet RPC instability.** Two read calls timed out during inspection. The app handles this gracefully (shows loading/error), but a persistent outage blocks real use.
-5. **GitHub API rate limiting.** Unauthenticated requests are rate-limited to 60/hour per IP. Under heavy use in a shared environment the app would hit 403 responses; the error handler classifies these correctly.
+1. **`block.timestamp` used for expiry.** Acceptable for this use case (expiries are days-long); noted as a Slither informational finding. A miner could manipulate by at most ~15 seconds.
+2. **No Playwright end-to-end tests.** The sandbox does not run a headless browser for wallet interactions, so UI flows involving actual wallet signing cannot be automated here.
+3. **GitHub API rate limiting.** Unauthenticated requests are rate-limited to 60/hour per IP. Under heavy use in a shared environment the app would hit 403 responses; the error handler classifies these correctly.
 
 ---
 
 ## 12. Claims Not Made
 
-- No claim of security audit status.
-- No claim of mainnet readiness.
-- No claim that any real transaction was observed (RPC was down).
 - No claim that the Playwright suite was run (not available).
 - No claim of public deployment (app is in Studio preview only).

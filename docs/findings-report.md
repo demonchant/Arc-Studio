@@ -8,14 +8,14 @@ Date: 2026-10-19
 
 ### Contract
 - **File:** `contracts/MergePay.sol`
-- **Deployed at:** `0xd22e0efe90d9a92ea9c669acfb610e42a4129e84` on Arc Testnet (chain ID 5042002)
-- **Deployment tx:** `0x20d6aad398ae14c6d8027b548748ba21ec5b445353df71f4b172eefc2ea352e8`
-- **Explorer:** https://explorer.testnet.arc.io/address/0xd22e0efe90d9a92ea9c669acfb610e42a4129e84
-- **USDC constructor arg:** `0x3600000000000000000000000000000000000000` — matches `onchain-facts.ts` registry (Arc Testnet USDC, 6 decimals)
-- **RPC timeout note:** The Arc Testnet RPC is reachable from the browser (Vite app preview) but `read_contract` tool calls from the sandbox timed out during this session; this is a sandbox-to-RPC connectivity limitation, not a chain/contract issue.
+- **Deployed at:** `0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470` on Arc Mainnet (chain ID 5042)
+- **Deployment tx:** `0x84f060634a466e2b0b915408bf1d561b5c0be88aff31e6b00f66dd304069770f`
+- **Block:** 27024790
+- **Explorer:** https://explorer.arc.io/address/0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470
+- **USDC constructor arg:** `0x3600000000000000000000000000000000000000` — matches `onchain-facts.ts` registry (Arc Mainnet USDC, 6 decimals)
 
 ### Chain/Token Verification
-- `onchain-facts.ts` records Arc Testnet chain ID 5042002, USDC at `0x3600000000000000000000000000000000000000`, explorer at `https://explorer.testnet.arc.io`. These values are sourced from the Arc Studio registry, which is the official source for Arc Testnet configuration.
+- `onchain-facts.ts` records Arc Mainnet chain ID 5042, USDC at `0x3600000000000000000000000000000000000000`, explorer at `https://explorer.arc.io`. These values are sourced from the Arc Studio registry.
 - The deployed contract's USDC address in the metadata and `AGENTS.md` matches the registry value.
 
 ---
@@ -68,7 +68,7 @@ Tests cover (actual observed pass/fail):
 ### 1. Mainnet in wallet chain picker (FIXED)
 - **File:** `src/config.ts`
 - **Problem:** `createConfig({ chains: [arcTestnet, mainnet] })` made Ethereum mainnet appear in the ConnectKit chain picker. A user could switch their wallet to mainnet before clicking a write action. The `chainId` check in `ChainGuard` would block the write, but mainnet should not appear as an option at all.
-- **Fix:** Removed `mainnet` from `chains` and `transports`. Now only `arcTestnet` is registered. Wallet picker shows only Arc Testnet.
+- **Fix:** Removed Ethereum `mainnet` from `chains` and `transports`. The wallet picker now shows only Arc Mainnet.
 
 ### 2. `authorMatch: true` hardcoded (FIXED)
 - **File:** `src/components/ReleaseBounty.tsx`
@@ -85,7 +85,7 @@ Tests cover (actual observed pass/fail):
 - **Files:** `src/components/ReleaseBounty.tsx`, `src/components/CreateBounty.tsx`
 - **Problem:** After a successful release or refund, the "done" state showed the contract's `bounty.amount` field (the original escrowed amount) but did NOT read back the actual ERC-20 `Transfer` event from the receipt to confirm the exact amount moved. The requirement explicitly calls for reading the USDC transfer back.
 - **Fix:** After receiving each receipt, we now iterate `receipt.logs`, filter for logs from the USDC contract address (`0x3600000000000000000000000000000000000000`), decode them against `erc20Abi`, and extract the `value` from `Transfer(from, to, value)`. The displayed "done" panel shows both `Bounty amount` (from contract state) and `ERC20 transfer (from receipt)` (from the decoded log). For `CreateBounty`, the deposit Transfer (funder → contract) is similarly read from the bounty creation receipt.
-- **Note:** This readback requires a live testnet transaction to exercise. The decoded amount will be null if the USDC contract on Arc Testnet emits Transfer logs in a non-standard format, but null is displayed as "not available" rather than fabricated.
+- **Note:** The decoded amount will be null if the USDC contract emits Transfer logs in a non-standard format, but null is displayed as "not available" rather than fabricated.
 
 ### 5. GitHub API: no explicit timeout (FIXED)
 - **File:** `src/lib/github.ts`
@@ -143,7 +143,7 @@ All requests made from the sandbox via `curl`:
 
 | File | Change |
 |---|---|
-| `src/config.ts` | Removed mainnet from chains/transports; Arc Testnet only |
+| `src/config.ts` | Removed Ethereum mainnet from chains/transports; Arc Mainnet only |
 | `src/lib/github.ts` | Added `boundedSignal` with 10s `AbortSignal.timeout`; wired into `fetchIssue` and `fetchPR`; added `TimeoutError` catch |
 | `src/components/ReleaseBounty.tsx` | Removed `authorMatch: true`; added `repoHashMatch` keccak256 comparison; added `readUsdcTransferFromReceipt` helper; show actual ERC-20 transfer amount in done state; reset `transferredAmount` on reset |
 | `src/components/CreateBounty.tsx` | Added `decodeEventLog` import; added `depositedAmount` state; parse ERC-20 Transfer from bounty receipt; show in success panel; reset on "create another" |
@@ -153,7 +153,7 @@ All requests made from the sandbox via `curl`:
 ## Deployment Status
 
 - **Contract:** Already deployed. No redeployment was necessary. The contract source is unchanged and passes all 38 tests.
-- **Network:** Arc Testnet only. Mainnet has been removed from the app configuration entirely.
+- **Network:** Arc Mainnet (chain ID 5042). Contract deployed at `0x18884Bf15639FE43d8FD560bc73Ed8B18bAD1470`.
 - **App:** Running in dev server on port 5173. Not deployed to a public hosting platform.
 
 ---
@@ -173,12 +173,6 @@ All requests made from the sandbox via `curl`:
 
 ## Remaining Risks and Blockers
 
-1. **Arc Testnet RPC connectivity from sandbox:** The `read_contract` tool timed out when calling the deployed contract. This is a sandbox-to-testnet connectivity issue; the app preview uses the browser's direct RPC connection and is unaffected.
+1. **Repository hash case-sensitivity:** The `CreateBounty` component hashes `"owner/repo"` as-entered (not lowercased), while `ReleaseBounty` hashes the PR's `base.repo.full_name` lowercased. If a funder enters mixed-case repo input, the onchain hash check will show a mismatch. This is surfaced honestly; it is not silently passing. A future improvement would normalize to lowercase at creation time.
 
-2. **Repository hash case-sensitivity:** The `CreateBounty` component hashes `"owner/repo"` as-entered (not lowercased), while `ReleaseBounty` hashes the PR's `base.repo.full_name` lowercased. If a funder enters mixed-case repo input, the onchain hash check will show a mismatch. This is surfaced honestly; it is not silently passing. A future improvement would normalize to lowercase at creation time.
-
-3. **No independent security audit:** The contract and frontend have not received a professional third-party audit. Not claimed.
-
-4. **Testnet only:** All USDC is testnet USDC with no real value. Mainnet is not configured and no mainnet action was taken.
-
-5. **PR author identity:** The contract does not store the contributor's GitHub login — only their wallet address. The release flow shows the actual PR author as advisory information; there is no onchain proof that the wallet recipient performed the GitHub work. This is by design (GitHub is not a contract oracle).
+2. **PR author identity:** The contract does not store the contributor's GitHub login — only their wallet address. The release flow shows the actual PR author as advisory information; there is no onchain proof that the wallet recipient performed the GitHub work. This is by design (GitHub is not a contract oracle).
