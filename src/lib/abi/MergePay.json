@@ -1,0 +1,120 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [{ "name": "_usdc", "type": "address", "internalType": "address" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "bounties",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [
+      { "name": "funder",          "type": "address",  "internalType": "address" },
+      { "name": "recipient",       "type": "address",  "internalType": "address" },
+      { "name": "amount",          "type": "uint256",  "internalType": "uint256" },
+      { "name": "expiresAt",       "type": "uint64",   "internalType": "uint64" },
+      { "name": "repositoryHash",  "type": "bytes32",  "internalType": "bytes32" },
+      { "name": "issueNumber",     "type": "uint256",  "internalType": "uint256" },
+      { "name": "state",           "type": "uint8",    "internalType": "enum MergePay.BountyState" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "bountyCount",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "createBounty",
+    "inputs": [
+      { "name": "recipient",       "type": "address", "internalType": "address" },
+      { "name": "amount",          "type": "uint256", "internalType": "uint256" },
+      { "name": "expiresAt",       "type": "uint64",  "internalType": "uint64" },
+      { "name": "repositoryHash",  "type": "bytes32", "internalType": "bytes32" },
+      { "name": "issueNumber",     "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "bountyId", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "refund",
+    "inputs": [{ "name": "bountyId", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "release",
+    "inputs": [
+      { "name": "bountyId",        "type": "uint256", "internalType": "uint256" },
+      { "name": "pullRequestHash", "type": "bytes32", "internalType": "bytes32" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "usdc",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "BountyCreated",
+    "inputs": [
+      { "name": "bountyId",       "type": "uint256", "indexed": true,  "internalType": "uint256" },
+      { "name": "funder",         "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "recipient",      "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount",         "type": "uint256", "indexed": false, "internalType": "uint256" },
+      { "name": "expiresAt",      "type": "uint64",  "indexed": false, "internalType": "uint64" },
+      { "name": "repositoryHash", "type": "bytes32", "indexed": false, "internalType": "bytes32" },
+      { "name": "issueNumber",    "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BountyRefunded",
+    "inputs": [
+      { "name": "bountyId", "type": "uint256", "indexed": true,  "internalType": "uint256" },
+      { "name": "funder",   "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount",   "type": "uint256", "indexed": false, "internalType": "uint256" }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BountyReleased",
+    "inputs": [
+      { "name": "bountyId",        "type": "uint256", "indexed": true,  "internalType": "uint256" },
+      { "name": "recipient",       "type": "address", "indexed": true,  "internalType": "address" },
+      { "name": "amount",          "type": "uint256", "indexed": false, "internalType": "uint256" },
+      { "name": "pullRequestHash", "type": "bytes32", "indexed": false, "internalType": "bytes32" }
+    ],
+    "anonymous": false
+  },
+  { "type": "error", "name": "AlreadyExpiredOrExpiring",     "inputs": [] },
+  { "type": "error", "name": "BalanceMismatch",               "inputs": [] },
+  { "type": "error", "name": "BountyNotFound",                "inputs": [] },
+  { "type": "error", "name": "InvalidExpiry",                 "inputs": [] },
+  { "type": "error", "name": "InvalidIssueNumber",            "inputs": [] },
+  { "type": "error", "name": "InvalidRepositoryHash",         "inputs": [] },
+  { "type": "error", "name": "NotExpired",                    "inputs": [] },
+  { "type": "error", "name": "NotFunder",                     "inputs": [] },
+  { "type": "error", "name": "ReentrancyGuardReentrantCall",  "inputs": [] },
+  {
+    "type": "error",
+    "name": "SafeERC20FailedOperation",
+    "inputs": [{ "name": "token", "type": "address", "internalType": "address" }]
+  },
+  { "type": "error", "name": "SelfRecipient",   "inputs": [] },
+  { "type": "error", "name": "TransferFailed",  "inputs": [] },
+  { "type": "error", "name": "WrongState",      "inputs": [] },
+  { "type": "error", "name": "ZeroAddress",     "inputs": [] },
+  { "type": "error", "name": "ZeroAmount",      "inputs": [] }
+]

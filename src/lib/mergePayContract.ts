@@ -16,7 +16,7 @@
  * The app targets Arc Mainnet (APP_CHAIN_ID = 5042).
  * MAINNET_READY = true. All write operations are enabled.
  */
-import artifact from '../../contracts/out/MergePay.sol/MergePay.json'
+import abi from './abi/MergePay.json'
 import {
   MAINNET_READY,
   MERGEPAY_MAINNET_ADDRESS,
@@ -38,7 +38,7 @@ export const MERGEPAY_ADDRESS = MERGEPAY_MAINNET_ADDRESS
  */
 export const MERGEPAY_TESTNET_ADDRESS_REF = MERGEPAY_TESTNET_ADDRESS
 
-export const MERGEPAY_ABI = artifact.abi
+export const MERGEPAY_ABI = abi
 
 export const MERGEPAY = MERGEPAY_ADDRESS
   ? ({ address: MERGEPAY_ADDRESS, abi: MERGEPAY_ABI } as const)
