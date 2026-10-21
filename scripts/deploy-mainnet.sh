@@ -71,6 +71,7 @@ fi
 echo "    chain ID confirmed: $ACTUAL_CHAIN"
 
 USDC_NAME=$(cast call --rpc-url "$RPC" "$USDC" "name()(string)" 2>&1)
+USDC_NAME=$(printf "%s" "$USDC_NAME" | tr -d '"' | xargs)
 if [ "$USDC_NAME" != "$EXPECTED_USDC_NAME" ]; then
   echo "ERROR: USDC name() returned '$USDC_NAME', expected '$EXPECTED_USDC_NAME'. Aborting."
   exit 1
